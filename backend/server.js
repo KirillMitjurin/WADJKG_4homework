@@ -120,6 +120,28 @@ app.post('/auth/login', async(req, res) => {
     }
 });
 
+// Get all posts
+app.get('/posts', async (req, res) => {
+    try {
+        const posts = await pool.query('SELECT * FROM posts');
+        res.status(200).json(posts.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+app.post('/posts/delete', async (req, res) => { 
+    try {
+        await pool.query('TRUNCATE TABLE posts');
+        res.status(200).json({ message: 'All posts deleted successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+
 //logout a user = deletes the jwt
 app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
