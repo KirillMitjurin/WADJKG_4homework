@@ -10,12 +10,12 @@ const pool = new Pool({
 
 const execute = async (query) => {
     try {
-        const client = await pool.connect(); // Установить соединение
-        const res = await client.query(query); // Выполнить запрос
-        client.release(); // Освободить соединение
+        const client = await pool.connect(); // Establish connection
+        const res = await client.query(query); // Execute query
+        client.release(); // Release connection
         return res;
     } catch (error) {
-        console.error(error.stack);
+        console.error(error.stack); // Log error
         return null;
     }
 };
@@ -42,17 +42,32 @@ const insertDataQuery = `
         WHERE p.text = d.text AND p.create_time = d.create_time
     );`;
 
+const createTblQueryUsers = `
+    CREATE TABLE IF NOT EXISTS "users" (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        email VARCHAR(200) NOT NULL UNIQUE,
+        password VARCHAR(200) NOT NULL 
+    );`;
+
 (async () => {
-    const createTableResult = await execute(createTblQueryPost);
-    if (createTableResult) {
+    // Create the "posts" table
+    const createPostsTableResult = await execute(createTblQueryPost);
+    if (createPostsTableResult) {
         console.log('Table "posts" is created or already exists.');
     }
 
+    // Insert data into the "posts" table
     const insertDataResult = await execute(insertDataQuery);
     if (insertDataResult) {
         console.log('Data inserted into "posts" table successfully.');
     } else {
         console.log('Failed to insert data into "posts" table.');
+    }
+
+    // Create the "users" table
+    const createUsersTableResult = await execute(createTblQueryUsers);
+    if (createUsersTableResult) {
+        console.log('Table "users" is created or already exists.');
     }
 })();
 

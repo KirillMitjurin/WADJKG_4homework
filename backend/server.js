@@ -131,13 +131,55 @@ app.get('/posts', async (req, res) => {
     }
 });
 
-app.post('/posts/delete', async (req, res) => { 
+// Get a specific post by ID
+app.get('/posts/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-        await pool.query('TRUNCATE TABLE posts');
-        res.status(200).json({ message: 'All posts deleted successfully' });
+        const post = await pool.query("SELECT * FROM posts WHERE id = $1", [id]);
+        if (post.rows.length === 0) return res.status(404).json({ error: "Post not found" });
+        res.status(200).json(post.rows[0]);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).send("Server error");
+    }
+});
+
+
+// Add a new post
+app.post('/posts', async (req, res) => {
+    const token = req.cookies.jwt; // Check the JWT token
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+        const decoded = jwt.verify(token, secret); // Verify JWT
+        const { text } = req.body; // Extract post body from request
+        const create_time = new Date(); // Use current timestamp
+
+        if (!text) return res.status(400).json({ error: "Post body is required" });
+
+        const result = await pool.query(
+            "INSERT INTO posts (text, create_time) VALUES ($1, $2) RETURNING *",
+            [text, create_time]
+        );
+
+        res.status(201).json({ post: result.rows[0] });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
+// Delete a specific post by ID
+app.delete('/posts/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query("DELETE FROM posts WHERE id = $1 RETURNING *", [id]);
+        if (result.rows.length === 0) return res.status(404).json({ error: "Post not found" });
+
+        res.status(200).json({ message: "Post deleted successfully" });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
     }
 });
 
@@ -147,3 +189,24 @@ app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 }); 
+
+// Update a specific post by ID
+app.put('/posts/:id', async (req, res) => {
+    const { id } = req.params;
+    const { text } = req.body;
+    try {
+        if (!text) return res.status(400).json({ error: "Post body is required" });
+
+        const result = await pool.query(
+            "UPDATE posts SET text = $1 WHERE id = $2 RETURNING *",
+            [text, id]
+        );
+        if (result.rows.length === 0) return res.status(404).json({ error: "Post not found" });
+
+        res.status(200).json({ post: result.rows[0] });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+

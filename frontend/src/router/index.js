@@ -42,19 +42,20 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ "../views/AboutView.vue"),
     },
     {
-        path: '/edit/:id', // Используйте :id для динамического сегмента
+        path: '/posts/:id', // Dynamic route for specific post
         name: "PostPage",
         component: PostPage,
         props: true,
-        beforeEnter: async(to, from, next) => {
-            let authResult = await auth.authenticated();
-            if (!authResult) {
-                next('/login')
-            } else {
-                next();
-            }
+        beforeEnter: async (to, from, next) => {
+          let authResult = await auth.authenticated();
+          if (!authResult) {
+            next('/login'); // Redirect to login if not authenticated
+          } else {
+            next();
+          }
         }
-      },
+    },
+      
       {
         path: "/posts/addPost",
         name: "addPost",
