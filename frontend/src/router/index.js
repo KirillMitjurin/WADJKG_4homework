@@ -3,6 +3,8 @@ import HomeView from "../views/HomeView.vue";
 import SignUp from "../views/SignUp.vue";
 import LogIn from "../views/LogIn.vue";
 import auth from "../auth";
+import PostPage from "../views/PostPage.vue";
+import addPost from "../views/addPost.vue";
 
 
 
@@ -39,6 +41,34 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "about" */ "../views/AboutView.vue"),
     },
+    {
+        path: '/edit/:id', // Используйте :id для динамического сегмента
+        name: "PostPage",
+        component: PostPage,
+        props: true,
+        beforeEnter: async(to, from, next) => {
+            let authResult = await auth.authenticated();
+            if (!authResult) {
+                next('/login')
+            } else {
+                next();
+            }
+        }
+      },
+      {
+        path: "/posts/addPost",
+        name: "addPost",
+        component: addPost,
+        beforeEnter: async(to, from, next) => {
+            let authResult = await auth.authenticated();
+            if (!authResult) {
+                next('/login')
+            } else {
+                next();
+            }
+        }
+      },
+    
 ];
 
 const router = createRouter({

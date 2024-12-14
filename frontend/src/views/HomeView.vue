@@ -3,126 +3,113 @@
     <div class="container">
       <button v-if="authResult" @click="Logout" class="center">Logout</button>
     </div>
-    <div class="post-list" v-for="post in posts" :key="post.post_id">
-      <div class="post">
+    <div v-for="post in posts" :key="post.id" class="post-list">
+      <div class="post" @click="editPost(post)">
         <div class="post-header">
           <div></div>
           <div class="post-date">{{ post.create_time }}</div>
         </div>
         <img v-if="post.imageUrl" :src="post.imageUrl" class="post-image" alt="Post Image" />
         <div class="post-text">{{ post.text }}</div>
-        <div class="post-footer">
-        </div>
+        <div class="post-footer"></div>
       </div>
     </div>
     <div class="container">
-      <button v-if="authResult" @click="Logout" class="left">add post</button>
-      <button v-if="authResult" @click="Delete" class="left">delete all posts </button>
+      <router-link :to="{ name:'addPost'}"> 
+        <button class="left">Add Post </button> 
+      </router-link>
+      <button v-if="authResult" @click="Delete" class="left">Delete All Posts</button>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import auth from "../auth";
 
 export default {
   name: "HomeView",
-  components: {
-  },
-  data: function () {
+  data() {
     return {
       posts: [],
       authResult: auth.authenticated(),
     };
   },
   methods: {
-    // Метод для выхода
+    // Logout handler
     Logout() {
       fetch("http://localhost:3000/auth/logout", {
-        credentials: 'include', // Для работы с cookies
+        credentials: "include",
       })
         .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          console.log('jwt removed');
+        .then(() => {
+          console.log("JWT removed");
           this.$router.push("/login");
         })
-        .catch((e) => {
-          console.log(e);
-          console.log("error logout");
-        });
+        .catch((e) => console.error("Error during logout", e));
     },
+    // Delete all posts
     Delete() {
-        fetch("http://localhost:3000/posts/delete", {
-            method: "POST",
-            credentials: 'include', // Для отправки cookies (если необходимо)
-        })
+      fetch("http://localhost:3000/posts/delete", {
+        method: "POST",
+        credentials: "include",
+      })
         .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            console.log('All posts deleted');
-            this.getPosts();  // Перезапуск получения постов для обновления интерфейса
+        .then(() => {
+          console.log("All posts deleted");
+          this.getPosts(); // Refresh post list
         })
-        .catch((e) => {
-            console.log(e);
-            console.log("Error deleting posts");
-        });
+        .catch((e) => console.error("Error deleting posts", e));
     },
-
-      
+    // Fetch posts from the server
     getPosts() {
       fetch("http://localhost:3000/posts", {
         method: "GET",
-        credentials: 'include', 
+        credentials: "include",
       })
         .then((response) => response.json())
         .then((data) => {
-          this.posts = data; 
+          this.posts = data;
         })
-        .catch((error) => {
-          console.error("Error fetching posts:", error);
-        });
+        .catch((error) => console.error("Error fetching posts:", error));
+    },
+    // Redirect to post details
+    editPost(post) {
+        this.$router.push(`/posts/${post.id}`); 
+      },
+    // Placeholder for AddPost
+    AddPost() {
+      console.log("Add post functionality not yet implemented.");
     },
   },
   mounted() {
-    this.getPosts(); 
+    this.getPosts();
   },
 };
 </script>
 
 <style scoped>
+/* Your existing styles, slightly cleaned up for clarity */
 body {
   margin: 20px 40px;
   font-size: 1.2rem;
   letter-spacing: 1px;
   background: #fafafa;
-  position: relative;
 }
 
 .post-list {
   background-color: #d3d3d3;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-    resize: none;
-    width: 400px; 
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 400px;
+  cursor: pointer;
 }
 
-h3 {
-  margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
-  color: #444;
-  background: #7e9756;
-}
-
-p {
-  background: #796dbd;
+.post-list:hover {
+  background-color: #c3c3c3;
 }
 
 h1,
@@ -137,53 +124,22 @@ label,
 button,
 div,
 footer {
-  margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   color: #444;
-}
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 80px;
-}
-
-input {
-  padding: 10px 12px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  font-size: 1em;
-  width: 100%;
-}
-
-label {
-  display: block;
-  margin: 20px 0 10px;
 }
 
 button {
   margin-top: 30px;
   border-radius: 36px;
-  background: #FEE996;
+  background: #fee996;
   border: 0;
   font-weight: 700;
-  font-size: 0.8em;
-  display: block;
   padding: 10px 16px;
   letter-spacing: 2px;
 }
 
-nav {
-  display: flex;
-  align-items: center;
-}
-
-
 .center {
   margin: auto;
-  border: 0;
   padding: 10px 20px;
   margin-top: 20px;
   width: 30%;
