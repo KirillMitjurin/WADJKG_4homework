@@ -1,13 +1,15 @@
 <template>
   <div class="form">
     <h3>Sign Up</h3>
-    <label for="email">Email</label>
-    <input type="email" name="email"  required v-model="email">
-    <label for="password">Password</label>
-    <input type="password" name="password" required v-model="password">
-    <div class="container">
-      <button @click="SignUp" class="SignUp">Sign Up</button>
-    </div>
+    <form @submit.prevent="SignUp">
+      <label for="email">Email</label>
+      <input type="email" name="email"  required v-model="email">
+      <label for="password">Password</label>
+      <input type="password" name="password" required v-model="password">
+      <div class="container">
+        <button @click="SignUp" class="SignUp">Sign Up</button>
+      </div>
+    </form>
   </div>
 </template>
 
