@@ -1,0 +1,82 @@
+[
+    {
+      "postId": 1,
+      "author": "Juri",
+      "createTime": "2024-11-02T22:45:23Z",
+      "text": "Tartu Town Hall Square",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 12
+    },
+    {
+      "postId": 2,
+      "author": "Georg",
+      "createTime": "2024-11-02T17:22:47Z",
+      "text": "This post does not have a picture but is still very important to share with everyone.",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 131
+    },
+    {
+      "postId": 3,
+      "author": "Kirill",
+      "createTime": "2024-11-02T17:50:14Z",
+      "text": "Best place is Tartu",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 11
+    },
+    {
+      "postId": 4,
+      "author": "Georg",
+      "createTime": "2024-11-01T22:19:50Z",
+      "text": "We started second homework!!!",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 131
+    },
+    {
+      "postId": 5,
+      "author": "Kirill",
+      "createTime": "2024-11-01T17:50:14Z",
+      "text": "We almost started our homework",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 131
+    },
+    {
+      "postId": 6,
+      "author": "Juri",
+      "createTime": "2024-10-01T14:41:52Z",
+      "text": "And another one",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 444
+    },
+    {
+      "postId": 7,
+      "author": "Juri",
+      "createTime": "2024-11-01T14:15:30Z",
+      "text": "I found this funny meme today",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 783
+    },
+    {
+      "postId": 8,
+      "author": "Kirill",
+      "createTime": "2024-11-01T12:33:45Z",
+      "text": "Mood: ( ͡° ͜ʖ ͡°)",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 0
+    },
+    {
+      "postId": 9,
+      "author": "Juri",
+      "createTime": "2024-11-01T00:10:16Z",
+      "text": "Classic",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 25
+    },
+    {
+      "postId": 10,
+      "author": "Georg",
+      "createTime": "2024-10-31T23:59:21Z",
+      "text": "Goodbye, October. Hello, November!",
+      "profilePicture": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ficon-library.com%2Fimages%2Funknown-person-icon%2Funknown-person-icon-4.jpg&f=1&nofb=1&ipt=33b28b6ff14c031c15a9917911a33404e11a8a1f4c0790482cf223e76f31af64&ipo=images",
+      "likeCount": 56
+    }
+  ]

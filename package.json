@@ -3,11 +3,19 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-      "start": "npm run start:backend & npm run serve:frontend",
-      "serve:frontend": "npm --prefix frontend run serve",
-      "build:frontend": "npm --prefix frontend run build",
-      "start:backend": "npm --prefix backend run start",
-      "install": "npm install && npm --prefix frontend install && npm --prefix backend install"
+        "start": "npm run start:backend & npm run serve:frontend",
+        "serve:frontend": "npm --prefix frontend run serve",
+        "build:frontend": "npm --prefix frontend run build",
+        "start:backend": "npm --prefix backend run start"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "cookie-parser": "^1.4.7",
+        "cors": "^2.8.5",
+        "express": "^4.21.2",
+        "jsonwebtoken": "^9.0.2",
+        "modules": "^0.4.0",
+        "pg": "^8.13.1",
+        "vue-cli-service": "^5.0.10"
     }
-  }
-  
+}

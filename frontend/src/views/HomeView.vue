@@ -1,137 +1,150 @@
 <template>
   <div class="header">
     <div class="container">
-    <button v-if = "authResult" @click="Logout" class="center">Logout</button>
+      <button v-if="authResult" @click="Logout" class="center">Logout</button>
     </div>
-    <div class="post-list" v-for="post in posts"   :key="post.index">  
-      <div class="post">
-          <h3>  Title:  {{post.title}} </h3>
-          <p>  <b> Body: </b> {{post.body}} </p>
+    <div v-for="post in posts" :key="post.id" class="post-list">
+      <div class="post" @click="editPost(post)">
+        <div class="post-header">
+          <div></div>
+          <div class="post-date">{{ post.create_time }}</div>
+        </div>
+        <img v-if="post.imageUrl" :src="post.imageUrl" class="post-image" alt="Post Image" />
+        <div class="post-text">{{ post.text }}</div>
+        <div class="post-footer"></div>
       </div>
+    </div>
+    <div class="container">
+      <router-link :to="{ name:'addPost'}"> 
+        <button class="left">Add Post </button> 
+      </router-link>
+      <button v-if="authResult" @click="Delete" class="left">Delete All Posts</button>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import auth from "../auth";
 
 export default {
   name: "HomeView",
-  components: {
-  },
-   data: function() {
+  data() {
     return {
-    posts:[ ],
-    authResult: auth.authenticated()
-    }
+      posts: [],
+      authResult: auth.authenticated(),
+    };
   },
   methods: {
+    // Logout handler
     Logout() {
       fetch("http://localhost:3000/auth/logout", {
-          credentials: 'include', //  Don't forget to specify this if you need cookies
+        credentials: "include",
       })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        console.log('jwt removed');
-        //console.log('jwt removed:' + auth.authenticated());
-        this.$router.push("/login");
-        //location.assign("/");
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("error logout");
-      });
-    },
-  }, 
-  mounted() {
-        fetch('https://jsonplaceholder.typicode.com/posts')
         .then((response) => response.json())
-        .then(data => this.posts = data)
-        .catch(err => console.log(err.message))
-    }
+        .then(() => {
+          console.log("JWT removed");
+          this.$router.push("/login");
+        })
+        .catch((e) => console.error("Error during logout", e));
+    },
+    // Delete all posts
+    Delete() {
+      fetch("http://localhost:3000/posts/delete", {
+        method: "POST",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then(() => {
+          console.log("All posts deleted");
+          this.getPosts(); // Refresh post list
+        })
+        .catch((e) => console.error("Error deleting posts", e));
+    },
+    // Fetch posts from the server
+    getPosts() {
+      fetch("http://localhost:3000/posts", {
+        method: "GET",
+        credentials: "include",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.posts = data;
+        })
+        .catch((error) => console.error("Error fetching posts:", error));
+    },
+    // Redirect to post details
+    editPost(post) {
+        this.$router.push(`/posts/${post.id}`); 
+      },
+    // Placeholder for AddPost
+    AddPost() {
+      console.log("Add post functionality not yet implemented.");
+    },
+  },
+  mounted() {
+    this.getPosts();
+  },
 };
 </script>
 
 <style scoped>
-body{
+/* Your existing styles, slightly cleaned up for clarity */
+body {
   margin: 20px 40px;
   font-size: 1.2rem;
   letter-spacing: 1px;
   background: #fafafa;
-  position: relative;
 }
-.post-list{
-  background: rgb(189, 212, 199);
-  margin-bottom: 5px;
-  padding: 3px 5px;
+
+.post-list {
+  background-color: #d3d3d3;
+  padding: 20px;
   border-radius: 10px;
-}
-h3{
-    margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
-  color: #444;
-  background: #7e9756;
-}
-p{
-  background: #796dbd;
-}
-h1, h2, h3, h4, ul, li, a, input, label, button, div, footer{
-  margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
-  color: #444;
-}
-nav{
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 80px;
+  flex-direction: column;
+  gap: 15px;
+  width: 400px;
+  cursor: pointer;
 }
-input{
-  padding: 10px 12px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  font-size: 1em;
-  width: 100%;
+
+.post-list:hover {
+  background-color: #c3c3c3;
 }
-label{
-  display: block;
-  margin: 20px 0 10px;
+
+h1,
+h2,
+h3,
+h4,
+ul,
+li,
+a,
+input,
+label,
+button,
+div,
+footer {
+  font-family: "Quicksand", sans-serif;
+  color: #444;
 }
-button{
+
+button {
   margin-top: 30px;
   border-radius: 36px;
-  background: #FEE996;
-  border:0;
+  background: #fee996;
+  border: 0;
   font-weight: 700;
-  font-size: 0.8em;
-  display: block;
   padding: 10px 16px;
   letter-spacing: 2px;
 }
-nav{
-  display: flex;
-  align-items: center;
-}
-.post {
-    width: 80%;
-    position: relative;
-    padding: 10px;
-    margin: 10px auto;
-    border: 1px solid gray;
-    text-align: left;
-}
+
 .center {
   margin: auto;
-  border: 0;
   padding: 10px 20px;
   margin-top: 20px;
-  margin: 10px auto;
-  width: 30%; 
+  width: 30%;
 }
+
 .container {
   display: flex;
   justify-content: center;

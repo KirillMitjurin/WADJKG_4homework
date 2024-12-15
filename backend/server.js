@@ -29,9 +29,9 @@ app.listen(port, () => {
 });
 
 
-// is used to check whether a user is authinticated
+// is used to check whether a user is authenticated
 app.get('/auth/authenticate', async(req, res) => {
-    console.log('authentication request has been arrived');
+    console.log('Authentication request arrived');
     const token = req.cookies.jwt; // assign the token named jwt to the token const
     //console.log("token " + token);
     let authenticated = false; // a user is not authenticated until proven the opposite
@@ -41,16 +41,16 @@ app.get('/auth/authenticate', async(req, res) => {
             await jwt.verify(token, secret, (err) => { //token exists, now we try to verify it
                 if (err) { // not verified, redirect to login page
                     console.log(err.message);
-                    console.log('token is not verified');
+                    console.log('Token is not verified');
                     res.send({ "authenticated": authenticated }); // authenticated = false
                 } else { // token exists and it is verified 
-                    console.log('author is authinticated');
+                    console.log('User is authenticated');
                     authenticated = true;
                     res.send({ "authenticated": authenticated }); // authenticated = true
                 }
             })
         } else { //applies when the token does not exist
-            console.log('author is not authinticated');
+            console.log('User is NOT authenticated');
             res.send({ "authenticated": authenticated }); // authenticated = false
         }
     } catch (err) {
@@ -62,12 +62,20 @@ app.get('/auth/authenticate', async(req, res) => {
 // signup a user
 app.post('/auth/signup', async(req, res) => {
     try {
-        console.log("a signup request has arrived");
+        console.log("Signup request arrived");
         //console.log(req.body);
         const { email, password } = req.body;
 
+        const existingUser = await pool.query(
+            "SELECT * FROM users WHERE email = $1", [email]);
+        if (existingUser.rows.length > 0) {
+            console.log("User already exists");
+            return res.status(400).json({ error: "User already exists" });
+        }
+
         const salt = await bcrypt.genSalt(); //  generates the salt, i.e., a random string
         const bcryptPassword = await bcrypt.hash(password, salt) // hash the password and the salt 
+        
         const authUser = await pool.query( // insert the user and the hashed password into the database
             "INSERT INTO users(email, password) values ($1, $2) RETURNING*", [email, bcryptPassword]
         );
@@ -89,7 +97,7 @@ app.post('/auth/signup', async(req, res) => {
 
 app.post('/auth/login', async(req, res) => {
     try {
-        console.log("a login request has arrived");
+        console.log("Login request arrived");
         const { email, password } = req.body;
         const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
         if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
@@ -107,7 +115,10 @@ app.post('/auth/login', async(req, res) => {
         //Checking if the password is correct
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
         //console.log("validPassword:" + validPassword);
-        if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
+        if (!validPassword) {
+            console.log("Incorrect password");
+            return res.status(401).json({ error: "Incorrect password" });
+        }
 
         const token = await generateJWT(user.rows[0].id);
         res
@@ -120,8 +131,93 @@ app.post('/auth/login', async(req, res) => {
     }
 });
 
-//logout a user = deletes the jwt
-app.get('/auth/logout', (req, res) => {
-    console.log('delete jwt request arrived');
-    res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
+// Get all posts
+app.get('/posts', async (req, res) => {
+    try {
+        const posts = await pool.query('SELECT * FROM posts');
+        res.status(200).json(posts.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
 });
+
+// Get a specific post by ID
+app.get('/posts/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const post = await pool.query("SELECT * FROM posts WHERE id = $1", [id]);
+        if (post.rows.length === 0) return res.status(404).json({ error: "Post not found" });
+        res.status(200).json(post.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
+
+// Add a new post
+app.post('/posts', async (req, res) => {
+    const token = req.cookies.jwt; // Check the JWT token
+    if (!token) return res.status(401).json({ error: "Unauthorized" });
+
+    try {
+        const decoded = jwt.verify(token, secret); // Verify JWT
+        const { text } = req.body; // Extract post body from request
+        const create_time = new Date(); // Use current timestamp
+
+        if (!text) return res.status(400).json({ error: "Post body is required" });
+
+        const result = await pool.query(
+            "INSERT INTO posts (text, create_time) VALUES ($1, $2) RETURNING *",
+            [text, create_time]
+        );
+
+        res.status(201).json({ post: result.rows[0] });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
+// Delete a specific post by ID
+app.delete('/posts/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query("DELETE FROM posts WHERE id = $1 RETURNING *", [id]);
+        if (result.rows.length === 0) return res.status(404).json({ error: "Post not found" });
+
+        res.status(200).json({ message: "Post deleted successfully" });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
+
+// Logout a user = delete the jwt
+app.get('/auth/logout', (req, res) => {
+    console.log('Delete jwt request arrived');
+    res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
+}); 
+
+// Update a specific post by ID
+app.put('/posts/:id', async (req, res) => {
+    const { id } = req.params;
+    const { text } = req.body;
+    try {
+        if (!text) return res.status(400).json({ error: "Post body is required" });
+
+        const result = await pool.query(
+            "UPDATE posts SET text = $1 WHERE id = $2 RETURNING *",
+            [text, id]
+        );
+        if (result.rows.length === 0) return res.status(404).json({ error: "Post not found" });
+
+        res.status(200).json({ post: result.rows[0] });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
