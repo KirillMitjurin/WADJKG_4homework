@@ -56,6 +56,7 @@ export default {
         });
         if (!response.ok) throw new Error("Failed to update post");
         alert("Post updated successfully!");
+        this.$router.push("/");
       } catch (err) {
         console.error(err.message);
         alert("Failed to update post. Please try again.");
