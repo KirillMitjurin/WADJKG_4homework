@@ -1,19 +1,15 @@
-# WAD-lab13-frontend
+# WADJKG_4homework
 
 ## Project setup
+Step 1:
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+npm run build:backend
 ```
 
-### Compiles and minifies for production
+Step 2:
 ```
-npm run build
+npm run serve:frontend
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Step 3: 
+Open localhost:8080 in local browser

@@ -1,11 +1,15 @@
 <template>
   <div class="form">
-    <h3>SignUp</h3>
-    <label for="email">Email</label>
-    <input type="email" name="email"  required v-model="email">
-    <label for="password">Password</label>
-    <input type="password" name="password" required v-model="password">
-    <button @click="SignUp" class="SignUp">SignUp</button>
+    <h3>Sign Up</h3>
+    <form @submit.prevent="SignUp">
+      <label for="email">Email</label>
+      <input type="email" name="email"  required v-model="email">
+      <label for="password">Password</label>
+      <input type="password" name="password" required v-model="password">
+      <div class="container">
+        <button @click="SignUp" class="SignUp">Sign Up</button>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -58,19 +62,19 @@ SignUp() {
   background: rgb(167, 154, 154);
   text-align: left;
   padding: 40px;
-  border-radius: 10px;
+  border-radius: 20px;
+  font-size: 1.2em;
 }
 h3 {
   text-align: center;
-  color: rgb(8, 110, 110);
+  color: rgb(8, 78, 110);
 }
 label {
-  color: rgb(8, 110, 110);
+  color: rgb(8, 78, 110);
   display: inline-block;
   margin: 25px 0 15px;
   font-size: 0.8em;
   text-transform: uppercase;
-  letter-spacing: 1px;
   font-weight: bold;
 }
 input {
@@ -80,10 +84,11 @@ input {
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid white;
-  color: blue;
+  color: black;
+  border-radius: 4px;
 }
 button {
-  background: rgb(8, 110, 110);
+  background: rgb(58, 118, 140);
   border: 0;
   padding: 10px 20px;
   margin-top: 20px;
@@ -91,5 +96,20 @@ button {
   border-radius: 20px;
   align-items: center;
   text-align: center;
+  font-weight: bold;
+}
+button:hover {
+  background: rgb(0, 98, 120);
+}
+.SignUp {
+  margin: auto;
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  width: 50%; 
+}
+.container {
+  display: flex;
+  justify-content: center;
 }
 </style>

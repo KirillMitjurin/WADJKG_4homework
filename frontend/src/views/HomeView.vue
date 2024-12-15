@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="flex-container">
     <div class="flex-side"></div>
 
@@ -24,6 +25,29 @@
     </div>
 
     <div class="flex-side"></div>
+=======
+  <div class="header">
+    <div class="container">
+      <button v-if="authResult" @click="Logout" class="center">Logout</button>
+    </div>
+    <div v-for="post in posts" :key="post.id" class="post-list">
+      <div class="post" @click="editPost(post)">
+        <div class="post-header">
+          <div></div>
+          <div class="post-date">{{ post.create_time }}</div>
+        </div>
+        <img v-if="post.imageUrl" :src="post.imageUrl" class="post-image" alt="Post Image" />
+        <div class="post-text">{{ post.text }}</div>
+        <div class="post-footer"></div>
+      </div>
+    </div>
+    <div class="container">
+      <router-link :to="{ name:'addPost'}"> 
+        <button class="left">Add Post </button> 
+      </router-link>
+      <button v-if="authResult" @click="Delete" class="left">Delete All Posts</button>
+    </div>
+>>>>>>> 09a6ba01779c683b905ba572dd15df644ef18dc3
   </div>
 </template>
 
@@ -73,6 +97,7 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+<<<<<<< HEAD
           this.posts = data.map((post) => ({
             ...post,
             formattedDate: this.formatDate(post.create_time),
@@ -90,6 +115,16 @@ export default {
     editPost(post) {
       this.$router.push(`/posts/${post.id}`);
     },
+=======
+          this.posts = data;
+        })
+        .catch((error) => console.error("Error fetching posts:", error));
+    },
+    // Redirect to post details
+    editPost(post) {
+        this.$router.push(`/posts/${post.id}`); 
+      },
+>>>>>>> 09a6ba01779c683b905ba572dd15df644ef18dc3
     // Placeholder for AddPost
     AddPost() {
       console.log("Add post functionality not yet implemented.");
@@ -103,6 +138,7 @@ export default {
 
 
 <style scoped>
+<<<<<<< HEAD
 .flex-container {
   display: flex;
   justify-content: space-between;
@@ -155,6 +191,66 @@ export default {
   margin-top: 2%;
   background-color: #e0e0e0;
   border-radius: 10px;
+=======
+/* Your existing styles, slightly cleaned up for clarity */
+body {
+  margin: 20px 40px;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  background: #fafafa;
+}
+
+.post-list {
+  background-color: #d3d3d3;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 400px;
+  cursor: pointer;
+}
+
+.post-list:hover {
+  background-color: #c3c3c3;
+}
+
+h1,
+h2,
+h3,
+h4,
+ul,
+li,
+a,
+input,
+label,
+button,
+div,
+footer {
+  font-family: "Quicksand", sans-serif;
+  color: #444;
+}
+
+button {
+  margin-top: 30px;
+  border-radius: 36px;
+  background: #fee996;
+  border: 0;
+  font-weight: 700;
+  padding: 10px 16px;
+  letter-spacing: 2px;
+}
+
+.center {
+  margin: auto;
+  padding: 10px 20px;
+  margin-top: 20px;
+  width: 30%;
+}
+
+.container {
+>>>>>>> 09a6ba01779c683b905ba572dd15df644ef18dc3
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -162,6 +258,7 @@ export default {
   overflow-wrap: break-word;
 
 }
+<<<<<<< HEAD
 
 
 .post-text {
@@ -201,4 +298,6 @@ export default {
   background-color: #4682b4;
   color: white;
 }
+=======
+>>>>>>> 09a6ba01779c683b905ba572dd15df644ef18dc3
 </style>
