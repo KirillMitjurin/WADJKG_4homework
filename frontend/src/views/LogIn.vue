@@ -61,7 +61,7 @@ LogIn() {
 <style scoped>
 .form {
   max-width: 420px;
-  margin: 30px auto;
+  margin: 10px auto;
   background: rgb(167, 154, 154);
   text-align: left;
   padding: 40px;
