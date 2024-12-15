@@ -13,8 +13,8 @@
         />
       </div>
       <div class="button-group">
-        <button type="submit">Update</button>
-        <button type="button" @click="deletePost">Delete</button>
+        <button type="submit" class="button">Update</button>
+        <button type="button" @click="deletePost" class="button">Delete</button>
       </div>
     </form>
   </div>
@@ -125,17 +125,17 @@ input {
   gap: 10px;
 }
 
-button {
-  flex: 1;
-  background-color: #42b983;
-  color: white;
-  padding: 10px 20px;
+.button {
+  background-color: rgb(58, 118, 140);
   border: none;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
   cursor: pointer;
+  color: white;
 }
 
-button:hover {
-  background-color: #339266;
+.button:hover {
+  background-color: rgb(0, 98, 120);
 }
 </style>

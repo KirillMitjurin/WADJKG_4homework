@@ -100,6 +100,7 @@ button {
   align-items: center;
   text-align: center;
   font-weight: bold;
+  cursor: pointer;
 }
 button:hover {
   background: rgb(0, 98, 120);

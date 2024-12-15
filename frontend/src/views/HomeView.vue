@@ -140,12 +140,17 @@ export default {
 }
 
 .logout-button {
-  background-color: #87ceeb;
+  background-color: rgb(58, 118, 140);
   border: none;
   padding: 10px 20px;
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
+  color: white;
+}
+
+.logout-button:hover {
+  background-color: rgb(0, 98, 120);
 }
 
 .post {
@@ -189,16 +194,16 @@ export default {
 }
 
 .action-button {
-  background-color: #87ceeb;
+  background-color: rgb(58, 118, 140);
   border: none;
   padding: 10px 20px;
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
+  color: white;
 }
 
 .action-button:hover {
-  background-color: #4682b4;
-  color: white;
+  background-color: rgb(0, 98, 120);
 }
 </style>

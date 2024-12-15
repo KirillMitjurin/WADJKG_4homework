@@ -12,7 +12,7 @@
           required
         />
       </div>
-      <button type="submit">Add</button>
+      <button type="submit" class="button">Add</button>
     </form>
   </div>
 </template>
@@ -88,16 +88,17 @@ input {
   box-sizing: border-box;
 }
 
-button {
-  background-color: #42b983;
-  color: white;
-  padding: 10px 20px;
+.button {
+  background-color: rgb(58, 118, 140);
   border: none;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
   cursor: pointer;
+  color: white;
 }
 
-button:hover {
-  background-color: #339266;
+.button:hover {
+  background-color: rgb(0, 98, 120);
 }
 </style>

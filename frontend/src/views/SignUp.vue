@@ -6,6 +6,9 @@
       <input type="email" name="email"  required v-model="email">
       <label for="password">Password</label>
       <input type="password" name="password" required v-model="password">
+
+      <p v-if="error" class="error-message">{{ error }}</p>
+
       <div class="container">
         <button @click="SignUp" class="SignUp">Sign Up</button>
       </div>
@@ -21,6 +24,7 @@ data: function() {
     return {
    email: '',
    password: '',
+   error: '',
   }
   },
   methods: {
@@ -40,19 +44,24 @@ SignUp() {
           credentials: 'include', //  Don't forget to specify this if you need cookies
           body: JSON.stringify(data),
       })
-      .then((response) => response.json())
-      .then((data) => {
-      console.log(data);
-      this.$router.push("/");
-      //location.assign("/");
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("error");
-      });
+      .then(async (response) => {
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Signup failed");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.error(error.message);
+          this.error = error.message;
+        });
     },
   }, 
-  }
+};
 </script>
 
 <style scoped>
@@ -68,6 +77,9 @@ SignUp() {
 h3 {
   text-align: center;
   color: rgb(8, 78, 110);
+}
+p {
+  color: darkred;
 }
 label {
   color: rgb(8, 78, 110);
@@ -97,6 +109,7 @@ button {
   align-items: center;
   text-align: center;
   font-weight: bold;
+  cursor: pointer;
 }
 button:hover {
   background: rgb(0, 98, 120);
