@@ -37,14 +37,4 @@ nav a:hover {
   text-decoration: underline;
 }
 
-.footer {
-  margin-top: 10px;
-  padding: 15px;
-  background-color: lightgray;
-  border-top: 1px solid #ccc;
-  color: #000000;
-  font-size: 14px;
-  text-align: center;
-  position: static;
-}
 </style>

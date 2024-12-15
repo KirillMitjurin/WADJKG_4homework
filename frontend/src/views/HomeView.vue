@@ -1,9 +1,7 @@
 <template>
   <div class="flex-container">
-    <!-- Левая колонка -->
     <div class="flex-side"></div>
 
-    <!-- Центральная колонка с контентом -->
     <div class="content">
       <div class="header">
         <button v-if="authResult" @click="Logout" class="logout-button">Logout</button>
@@ -25,7 +23,6 @@
       </div>
     </div>
 
-    <!-- Правая колонка -->
     <div class="flex-side"></div>
   </div>
 </template>
