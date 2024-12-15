@@ -1,7 +1,12 @@
+ 
 <template>
-    <div class="container">
-      <div class="post-list">
-        <div class="post" v-for="post in posts" :key="post.id">
+  <div class="flex-container">
+    <div class="flex-side"></div>
+
+    <div class="content">
+        <button v-if="authResult" @click="Logout" class="logout-button">Logout</button>
+      <div v-for="post in posts" :key="post.id" class="post-list">
+        <div class="post" @click="editPost(post)">
           <div class="post-header">
             <div></div>
             <div class="post-date">{{ post.formattedDate }}</div>
@@ -9,14 +14,17 @@
           <div class="post-text">{{ post.text }}</div>
         </div>
       </div>
-    </div>
       <div class="button-container">
         <router-link :to="{ name: 'addPost' }">
           <button class="action-button">Add Post</button>
         </router-link>
         <button v-if="authResult" @click="Delete" class="action-button">Delete All Posts</button>
       </div>
+    </div>
+    <div class="flex-side"></div>
+  </div>
 </template>
+
 
 <script>
 import auth from "../auth";
@@ -95,39 +103,46 @@ export default {
 <style scoped>
 .flex-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 20px;
-  height: 100vh;
+  justify-content: center; /* Center content horizontally */
+  align-items: stretch; /* Ensure all flex children have equal height */
+  gap: 20px; /* Adds space between side columns and content */
+  margin: 0 auto; /* Center the entire layout */
+  padding: 20px;
+  box-sizing: border-box;
+  height: 100%; /* Make container stretch full page height */
 }
 
 .flex-side {
-  flex: 1; 
+  flex: 1; /* Let side columns share equal width */
   max-width: 400px;
-  padding: 20px;
-  text-align: center;
-  margin: 10px;
-  border-radius: 15px;
   background-color: lightgray;
-  height: 90%;
+  border-radius: 15px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .content {
-  flex: 0 0 600px;
+  flex: 2; /* Middle box grows twice the size of the side columns */
+  max-width: 600px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  box-sizing: border-box;
 }
 
 .header {
-  width: 100%;
+  width: 10vw; /* 100% of the viewport width */
   text-align: center;
-  margin-bottom: 20px;
+  margin: 0; /* Remove any default margins */
+  padding: 10px 0;
+  background-color: #f2f2f2;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
+
+
 
 .logout-button {
   background-color: rgb(58, 118, 140);
@@ -166,8 +181,6 @@ export default {
   flex-grow: 1; 
 
 }
-
-
 .post-text {
   margin-top: 10px;
   font-size: 16px;

@@ -25,12 +25,15 @@
   text-align: center;
 }
 nav {
-  padding: 30px;
+  padding: 20px 0;
   background-color: lightgray;
-  border-radius: 25px;
-  margin: auto;
-  width: 50%;
+  border-radius: 10px;
+  max-width: 97%; /* weird,  but keeps it roughly equal */
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 nav a {
   font-weight: bold;
   color: #2c3e50;
@@ -41,14 +44,14 @@ nav a:hover {
   text-decoration: underline;
 }
 
-
-
 footer {
   margin-top: 2%;
-  padding: 20px;
+  padding: 40px 20px;
   background-color: lightgray;
-  color: #fff;
+  color: #444;
   text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 </style>
