@@ -66,8 +66,16 @@ app.post('/auth/signup', async(req, res) => {
         //console.log(req.body);
         const { email, password } = req.body;
 
+        const existingUser = await pool.query(
+            "SELECT * FROM users WHERE email = $1", [email]);
+        if (existingUser.rows.length > 0) {
+            console.log("User already exists");
+            return res.status(400).json({ error: "User already exists" });
+        }
+
         const salt = await bcrypt.genSalt(); //  generates the salt, i.e., a random string
         const bcryptPassword = await bcrypt.hash(password, salt) // hash the password and the salt 
+        
         const authUser = await pool.query( // insert the user and the hashed password into the database
             "INSERT INTO users(email, password) values ($1, $2) RETURNING*", [email, bcryptPassword]
         );
@@ -107,7 +115,10 @@ app.post('/auth/login', async(req, res) => {
         //Checking if the password is correct
         const validPassword = await bcrypt.compare(password, user.rows[0].password);
         //console.log("validPassword:" + validPassword);
-        if (!validPassword) return res.status(401).json({ error: "Incorrect password" });
+        if (!validPassword) {
+            console.log("Incorrect password");
+            return res.status(401).json({ error: "Incorrect password" });
+        }
 
         const token = await generateJWT(user.rows[0].id);
         res
