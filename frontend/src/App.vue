@@ -41,4 +41,14 @@ nav a:hover {
   text-decoration: underline;
 }
 
+
+
+footer {
+  margin-top: 2%;
+  padding: 20px;
+  background-color: lightgray;
+  color: #fff;
+  text-align: center;
+}
+
 </style>

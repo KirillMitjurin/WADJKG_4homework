@@ -1,13 +1,7 @@
 <template>
-  <div class="flex-container">
-    <div class="flex-side"></div>
-
-    <div class="content">
-      <div class="header">
-        <button v-if="authResult" @click="Logout" class="logout-button">Logout</button>
-      </div>
-      <div v-for="post in posts" :key="post.id" class="post-list">
-        <div class="post" @click="editPost(post)">
+    <div class="container">
+      <div class="post-list">
+        <div class="post" v-for="post in posts" :key="post.id">
           <div class="post-header">
             <div></div>
             <div class="post-date">{{ post.formattedDate }}</div>
@@ -15,18 +9,14 @@
           <div class="post-text">{{ post.text }}</div>
         </div>
       </div>
+    </div>
       <div class="button-container">
         <router-link :to="{ name: 'addPost' }">
           <button class="action-button">Add Post</button>
         </router-link>
         <button v-if="authResult" @click="Delete" class="action-button">Delete All Posts</button>
       </div>
-    </div>
-
-    <div class="flex-side"></div>
-  </div>
 </template>
-
 
 <script>
 import auth from "../auth";
@@ -153,8 +143,16 @@ export default {
   background-color: rgb(0, 98, 120);
 }
 
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 400px; 
+  margin: 0 auto; 
+}
+
 .post {
-  width: 400px;
+  width: 100%; 
   max-width: 400px;
   padding: 20px;
   margin-top: 2%;
@@ -165,6 +163,7 @@ export default {
   align-items: flex-start;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  flex-grow: 1; 
 
 }
 
