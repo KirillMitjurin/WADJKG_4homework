@@ -29,9 +29,9 @@ app.listen(port, () => {
 });
 
 
-// is used to check whether a user is authinticated
+// is used to check whether a user is authenticated
 app.get('/auth/authenticate', async(req, res) => {
-    console.log('authentication request has been arrived');
+    console.log('Authentication request arrived');
     const token = req.cookies.jwt; // assign the token named jwt to the token const
     //console.log("token " + token);
     let authenticated = false; // a user is not authenticated until proven the opposite
@@ -41,16 +41,16 @@ app.get('/auth/authenticate', async(req, res) => {
             await jwt.verify(token, secret, (err) => { //token exists, now we try to verify it
                 if (err) { // not verified, redirect to login page
                     console.log(err.message);
-                    console.log('token is not verified');
+                    console.log('Token is not verified');
                     res.send({ "authenticated": authenticated }); // authenticated = false
                 } else { // token exists and it is verified 
-                    console.log('author is authinticated');
+                    console.log('User is authenticated');
                     authenticated = true;
                     res.send({ "authenticated": authenticated }); // authenticated = true
                 }
             })
         } else { //applies when the token does not exist
-            console.log('author is not authinticated');
+            console.log('User is NOT authenticated');
             res.send({ "authenticated": authenticated }); // authenticated = false
         }
     } catch (err) {
@@ -62,7 +62,7 @@ app.get('/auth/authenticate', async(req, res) => {
 // signup a user
 app.post('/auth/signup', async(req, res) => {
     try {
-        console.log("a signup request has arrived");
+        console.log("Signup request arrived");
         //console.log(req.body);
         const { email, password } = req.body;
 
@@ -89,7 +89,7 @@ app.post('/auth/signup', async(req, res) => {
 
 app.post('/auth/login', async(req, res) => {
     try {
-        console.log("a login request has arrived");
+        console.log("Login request arrived");
         const { email, password } = req.body;
         const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
         if (user.rows.length === 0) return res.status(401).json({ error: "User is not registered" });
@@ -184,9 +184,9 @@ app.delete('/posts/:id', async (req, res) => {
 });
 
 
-//logout a user = deletes the jwt
+// Logout a user = delete the jwt
 app.get('/auth/logout', (req, res) => {
-    console.log('delete jwt request arrived');
+    console.log('Delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 }); 
 
